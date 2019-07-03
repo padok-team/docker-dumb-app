@@ -1,0 +1,37 @@
+---
+- name: Deploy simple node app
+  hosts: instance-1
+  strategy: linear
+  become: true
+  roles:
+    - geerlingguy.docker
+  tasks:
+    - name: Clone app repo
+      git:
+        repo: https://github.com/padok-team/docker-dumb-app.git
+        dest: "{{ app_location }}"
+        force: yes
+        version: "{{ app_branch }}"
+
+    - name: Install docker python library and docker-compose
+      apt:
+        name:
+          - python-docker
+          - docker-compose
+
+    - name: Build and run app
+      docker_compose:
+        project_name: dumb-app
+        build: true
+        definition:
+          version: '2'
+          services:
+            web:
+              build: "{{ app_location }}"
+              ports:
+                - '{{ app_port }}:8080'
+  vars:
+    app_location: /var/opt/dumb-app/
+    app_branch: feature-A
+    app_port: 3000
+...
