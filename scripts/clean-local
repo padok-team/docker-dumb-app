@@ -1,0 +1,2 @@
+# Run clean script on ec2 instance and remove scripts folder
+ssh -i pierre-formation.pem ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com "/home/ubuntu/scripts/clean && rm -rf /home/ubuntu/scripts"

@@ -1,0 +1,6 @@
+
+# Copy scripts to EC2 instance
+scp -r -i pierre-formation.pem ./scripts ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com:/home/ubuntu/scripts
+
+# Run deploy script on ec2 instance
+ssh -i pierre-formation.pem ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com "/home/ubuntu/scripts/deploy"
