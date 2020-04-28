@@ -1,6 +1,8 @@
 #!/bin/bash
 echo "SETUP - Running as user $USER"
 
+BRANCH = "${1-master}"
+
 if [[ -d "./pierre-app" ]]
 then
     rm -rf ./pierre-app
@@ -9,10 +11,10 @@ mkdir pierre-app
 pushd ./pierre-app
 
 # On clone le repo depuis la branche passée en argument (master par défaut)
-git clone -b ${1-master} https://github.com/padok-team/docker-dumb-app.git
+git clone -b $BRANCH https://github.com/padok-team/docker-dumb-app.git
 pushd ./docker-dumb-app
 
-echo "SETUP - Cloned repo on branch ${1-master}"
+echo "SETUP - Cloned repo on branch $BRANCH"
 echo
 docker --version &> /dev/null
 if [ $? = 127 ] # <- Command not found code, need to install docker
