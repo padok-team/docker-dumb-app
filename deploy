@@ -1,0 +1,20 @@
+#!/bin/bash
+
+mkdir pierre-app
+pushd ./pierre-app
+
+# On clone le repo depuis la branche passée en argument (master par défaut)
+git clone -b ${1-master} git@github.com:padok-team/docker-dumb-app.git
+pushd ./docker-dumb-app
+
+docker --version &> /dev/null
+if [ $? = 127 ] # <- Command not found code, need to install docker
+then
+    sudo apt install docker.io -y
+fi
+
+docker build -t docker-dumb-app:v1 .
+docker run -d -p 3000:8080 --name pierre-app docker-dumb-app:v1
+
+# On revient dans le dir d'origine
+popd && popd
