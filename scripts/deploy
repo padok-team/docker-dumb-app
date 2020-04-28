@@ -1,0 +1,48 @@
+#!/bin/bash
+echo "SETUP - Running as user $USER"
+
+if [[ -d "./pierre-app" ]]
+then
+    rm -rf ./pierre-app
+fi
+mkdir pierre-app
+pushd ./pierre-app
+
+# On clone le repo depuis la branche passée en argument (master par défaut)
+git clone -b ${1-master} https://github.com/padok-team/docker-dumb-app.git
+pushd ./docker-dumb-app
+
+echo "SETUP - Cloned repo on branch ${1-master}"
+echo
+docker --version &> /dev/null
+if [ $? = 127 ] # <- Command not found code, need to install docker
+then
+    # Add docker repository and install docker
+    sudo apt-get update
+    sudo apt-get install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg-agent \
+        software-properties-common -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) \
+        stable"
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+    
+    sudo usermod -aG docker ubuntu # <- Add ubuntu non-root user to docker group
+    su - $USER # <- Update user session with new groups
+fi
+
+echo "SETUP - Building docker image"
+echo
+docker build -t docker-dumb-app:v1 .
+docker run -d -p 3000:8080 --name pierre-app docker-dumb-app:v1
+
+# On revient dans le dir d'origine
+popd && popd
+
+echo "SETUP - Done"
