@@ -1,2 +1,9 @@
-# Run clean script on ec2 instance and remove scripts folder
-ssh -i pierre-formation.pem ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com "/home/ubuntu/scripts/clean && rm -rf /home/ubuntu/scripts"
+if [ ! -z "$1" ] && [ -f "$1" ]; then   
+    IDENTITY_FILE=$1
+
+    # Run clean script on ec2 instance and remove scripts folder
+    ssh -i "$IDENTITY_FILE" ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com "/home/ubuntu/scripts/clean && rm -rf /home/ubuntu/scripts"
+else
+    echo "No argument supplied"
+    echo "Usage: clean-local IDENTITY_FILE"
+fi

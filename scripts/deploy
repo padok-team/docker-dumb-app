@@ -37,6 +37,11 @@ then
     su - $USER # <- Update user session with new groups
 fi
 
+echo "SETUP - Stopping docker container if exists"
+docker stop pierre-app
+docker rm pierre-app
+docker rmi docker-dumb-app:v1
+
 echo "SETUP - Building docker image"
 echo
 docker build -t docker-dumb-app:v1 .
