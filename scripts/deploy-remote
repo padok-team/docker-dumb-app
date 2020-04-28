@@ -13,6 +13,6 @@ if [ ! -z "$1" ] && [ -f "$1" ]; then
     ssh -i "$IDENTITY_FILE" ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com "/home/ubuntu/scripts/deploy $BRANCH"
 else
     echo "No argument supplied"
-    echo "Usage: deploy-local IDENTITY_FILE [BRANCH]"
+    echo "Usage: deploy-remote IDENTITY_FILE [BRANCH]"
 fi
 
