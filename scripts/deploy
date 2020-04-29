@@ -47,6 +47,9 @@ docker rmi docker-dumb-app:v1
 echo "SETUP - Building docker image"
 echo
 docker build -t docker-dumb-app:v1 .
+
+echo "SETUP - Running docker container"
+echo
 docker run -d -p 3000:8080 --name pierre-app docker-dumb-app:v1
 
 # On revient dans le dir d'origine
