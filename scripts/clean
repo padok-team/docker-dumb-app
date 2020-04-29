@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "CLEANUP - Stopping container(s)"
+
+docker stop pierre-app
+docker rm pierre-app
+docker rmi docker-dumb-app:v1
+
+echo "CLEANUP - Docker cleanup done"
+
+rm -rf ./pierre-app
+
+echo "CLEANUP - Removed all files"

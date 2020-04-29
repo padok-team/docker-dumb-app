@@ -1,0 +1,18 @@
+
+if [ ! -z "$1" ] && [ -f "$1" ]; then   
+    IDENTITY_FILE=$1
+    BRANCH=$2
+
+    # Delete old scripts
+    ssh -i "$IDENTITY_FILE" ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com "rm -rf /home/ubuntu/scripts"
+
+    # Copy scripts to EC2 instance
+    scp -r -i "$IDENTITY_FILE" ./scripts ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com:/home/ubuntu/scripts
+
+    # Run deploy script on ec2 instance
+    ssh -i "$IDENTITY_FILE" ubuntu@ec2-52-47-111-70.eu-west-3.compute.amazonaws.com "/home/ubuntu/scripts/deploy $BRANCH"
+else
+    echo "No argument supplied"
+    echo "Usage: deploy-remote IDENTITY_FILE [BRANCH]"
+fi
+
